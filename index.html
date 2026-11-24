@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>湖州市人工智能赋能平台</title>
+<meta name="description" content="湖州市人工智能赋能平台（Huzhou AI City Mall）：统一归集算力、数据、模型、智能体与服务队伍，提供供需一体化、要素一体化、安全一体化三项服务，把 AI 能力送进湖州的每条产线。" />
+<meta name="theme-color" content="#0f1729" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='9' fill='%2345e0cf'/%3E%3Cpath d='M20 8 30 14v12l-10 6-10-6V14z' fill='none' stroke='%230f1729' stroke-width='2.6' stroke-linejoin='round'/%3E%3Ccircle cx='20' cy='20' r='3.2' fill='%230f1729'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<a class="skip-link" href="#app">跳到主要内容</a>
+<header class="site-header" id="siteHeader"></header>
+<main id="app" tabindex="-1"></main>
+<footer class="site-footer" id="siteFooter"></footer>
+
+<div class="backdrop" id="backdrop" hidden></div>
+
+<!-- 智能体详情抽屉 -->
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="智能体详情" aria-hidden="true" tabindex="-1">
+  <div class="drawer-top">
+    <button type="button" class="drawer-close" id="drawerClose" aria-label="关闭详情"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    <div class="drawer-cover" id="drawerCover"></div>
+    <div class="drawer-hero" id="drawerHero"></div>
+  </div>
+  <div class="drawer-tabs" id="drawerTabs" role="tablist" aria-label="详情分类">
+    <button type="button" role="tab" class="active" aria-selected="true" data-tab="intro">能力介绍</button>
+    <button type="button" role="tab" aria-selected="false" data-tab="effect">实测成效</button>
+    <button type="button" role="tab" aria-selected="false" data-tab="demo">在线体验</button>
+    <button type="button" role="tab" aria-selected="false" data-tab="source">数据说明</button>
+  </div>
+  <div class="drawer-body" id="drawerBody" role="tabpanel"></div>
+  <div class="drawer-foot">
+    <button type="button" class="fav-btn-lg" id="drawerFav" aria-label="收藏" aria-pressed="false"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"/></svg></button>
+    <button type="button" class="btn btn-ghost" id="drawerCustom">定制需求</button>
+    <a class="btn btn-primary" id="drawerTry" target="_blank" rel="noopener noreferrer">在线试用</a>
+  </div>
+</aside>
+
+<!-- 供需大厅 · 发布需求表单抽屉（宽 520px，9 个标准字段） -->
+<aside class="drawer demand-drawer" id="demandDrawer" role="dialog" aria-modal="true" aria-label="发布业务需求" aria-hidden="true" tabindex="-1">
+  <div class="demand-drawer-head">
+    <div>
+      <span class="eyebrow" style="margin-bottom:2px">DEMAND SUBMISSION</span>
+      <h3>发布 AI 场景需求</h3>
+      <p class="note">填写场景现状、期望效果与预算区间，平台将在 2 个工作日内完成匹配反馈</p>
+    </div>
+    <button type="button" class="drawer-close" id="demandDrawerClose" aria-label="关闭需求表单" style="position:static"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  </div>
+  <form class="drawer-body demand-form" id="demandForm" novalidate>
+    <div class="form-error" id="demandFormError" role="alert" hidden></div>
+
+    <div class="form-field">
+      <label for="dfTitle">需求名称 <span class="req">*</span></label>
+      <input id="dfTitle" name="title" type="text" required minlength="4" maxlength="30" placeholder="4—30 字，如：织里童装秋冬新款花型快速打样" />
+    </div>
+
+    <div class="form-row-2">
+      <div class="form-field">
+        <label for="dfDistrict">所属区县 <span class="req">*</span></label>
+        <select id="dfDistrict" name="district" required>
+          <option value="吴兴区">吴兴区</option>
+          <option value="南浔区">南浔区</option>
+          <option value="德清县">德清县</option>
+          <option value="长兴县">长兴县</option>
+          <option value="安吉县">安吉县</option>
+          <option value="市本级">市本级</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label for="dfIndustry">所属行业 / 产业 <span class="req">*</span></label>
+        <select id="dfIndustry" name="industry" required>
+          <option value="制造业">制造业</option>
+          <option value="办公">办公</option>
+          <option value="IT运维">IT运维</option>
+          <option value="销售工具">销售工具</option>
+          <option value="政务">政务</option>
+          <option value="医疗">医疗</option>
+          <option value="教育">教育</option>
+          <option value="金融">金融</option>
+          <option value="数字员工">数字员工</option>
+        </select>
+      </div>
+    </div>
+    <p class="form-hint" id="districtIndHint">推荐：童装纺织、美妆日化、智能物流装备</p>
+
+    <div class="form-field">
+      <div class="form-label-row">
+        <label for="dfPain">现状与痛点 <span class="req">*</span></label>
+        <span class="char-count" id="painCount">0 / 300 字（需 20—300 字）</span>
+      </div>
+      <textarea id="dfPain" name="pain" rows="3" required minlength="20" maxlength="300" placeholder="请描述当前业务流程痛点、耗时或人工成本（20—300 字）"></textarea>
+    </div>
+
+    <div class="form-field">
+      <div class="form-label-row">
+        <label for="dfExpect">期望效果 <span class="req">*</span></label>
+        <span class="char-count" id="expectCount">0 / 200 字（需 10—200 字）</span>
+      </div>
+      <textarea id="dfExpect" name="expect" rows="2" required minlength="10" maxlength="200" placeholder="尽量量化，如：质检漏检率降至 1% 以下，或单份审查时长缩至 5 分钟内"></textarea>
+    </div>
+
+    <div class="form-row-2">
+      <div class="form-field">
+        <label for="dfBudget">预算区间 <span class="req">*</span></label>
+        <select id="dfBudget" name="budget" required>
+          <option value="≤10 万">≤10 万</option>
+          <option value="10—50 万" selected>10—50 万</option>
+          <option value="50—100 万">50—100 万</option>
+          <option value="≥100 万">≥100 万</option>
+          <option value="待定">待定</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label for="dfDeadline">期望上线时间</label>
+        <input id="dfDeadline" name="deadline" type="month" min="2026-11" value="2027-03" />
+      </div>
+    </div>
+
+    <div class="form-field">
+      <span class="form-label">是否接受 POC 验证 <span class="req">*</span></span>
+      <div class="radio-group">
+        <label class="radio-pill"><input type="radio" name="acceptPoc" value="accept" /><span>接受</span></label>
+        <label class="radio-pill"><input type="radio" name="acceptPoc" value="evaluate" checked /><span>需评估（默认）</span></label>
+        <label class="radio-pill"><input type="radio" name="acceptPoc" value="reject" /><span>不接受</span></label>
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label for="dfOrg">单位名称 <span class="req">*</span></label>
+      <input id="dfOrg" name="org" type="text" required placeholder="请填写企业或单位全称（展示时自动脱敏）" />
+    </div>
+
+    <div class="form-row-2">
+      <div class="form-field">
+        <label for="dfContact">联系人 <span class="req">*</span></label>
+        <input id="dfContact" name="contact" type="text" required placeholder="如：张先生" />
+      </div>
+      <div class="form-field">
+        <label for="dfPhone">手机号 <span class="req">*</span></label>
+        <input id="dfPhone" name="phone" type="tel" required pattern="^1[0-9]{10}$" maxlength="11" placeholder="11 位手机号（1 开头）" />
+      </div>
+    </div>
+    <p class="form-privacy">联系方式仅用于平台与 FDE 联合服务团队联系对接，不在公开页面展示。</p>
+
+    <div class="demand-drawer-foot">
+      <button type="button" class="btn btn-ghost" id="demandCancelBtn">取消</button>
+      <button type="submit" class="btn btn-primary">提交需求单</button>
+    </div>
+  </form>
+</aside>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="data/agents.js"></script>
+<script src="data/huzhou-map.js"></script>
+<script src="data/industry.js"></script>
+<script src="data/portal-v3.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/art.js"></script>
+<script src="js/pages/home.js"></script>
+<script src="js/pages/agents.js"></script>
+<script src="js/pages/data.js"></script>
+<script src="js/pages/talent.js"></script>
+<script src="js/pages/cases.js"></script>
+<script src="js/pages/policy.js"></script>
+<script src="js/pages/knowledge.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

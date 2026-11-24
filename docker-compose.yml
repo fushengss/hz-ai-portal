@@ -1,0 +1,12 @@
+services:
+  hz-ai-portal:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NGINX_IMAGE: ${NGINX_IMAGE:-nginx:1.27-alpine}
+    image: hz-ai-portal:latest
+    container_name: hz-ai-portal
+    ports:
+      - "${PORT:-8080}:80"
+    restart: unless-stopped

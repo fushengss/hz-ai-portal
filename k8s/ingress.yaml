@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hz-ai-portal
+  labels:
+    app: hz-ai-portal
+spec:
+  # 按集群实际安装的 Ingress Controller 调整（常见为 nginx / traefik）
+  ingressClassName: nginx
+  rules:
+    # 将 host 替换为你的实际域名即可通过 http://<域名> 直接访问；
+    # 如无需按域名路由，可删除 host 一行。
+    - host: hz-ai-portal.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: hz-ai-portal
+                port:
+                  number: 80
